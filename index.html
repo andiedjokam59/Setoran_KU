@@ -241,6 +241,20 @@
         </div>
     </div>
 
+    <!-- INDICATOR LOADING PROSES DATA CLOUD (SIMPLE & ESTETIK) -->
+    <div id="cloudLoadingSpinner" class="fixed inset-0 z-[220] flex items-center justify-center bg-slate-900/30 backdrop-blur-md opacity-0 pointer-events-none hidden transition-opacity duration-300">
+        <div class="glass-card px-6 py-5 rounded-[2rem] flex flex-col items-center gap-3 border border-white/90 shadow-2xl bg-white/80">
+            <div class="relative flex items-center justify-center">
+                <div class="w-10 h-10 border-[3px] border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                <div class="w-3 h-3 bg-blue-600 rounded-full absolute"></div>
+            </div>
+            <div class="text-center">
+                <span id="cloudLoadingText" class="text-xs font-black text-blue-950 block">Mengambil Data...</span>
+                <span class="text-[9px] font-bold text-blue-600 tracking-wider uppercase">Mohon Tunggu Sebentar</span>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST FLOATING -->
     <div id="toastNotification" class="fixed top-5 left-1/2 -translate-x-1/2 z-[200] max-w-xs w-full px-4 py-3 rounded-2xl shadow-2xl border text-xs font-bold flex items-center gap-2.5 opacity-0 -translate-y-10 pointer-events-none hidden transition-all duration-300 backdrop-blur-xl">
         <span id="toastIcon" class="text-base"></span>
@@ -571,7 +585,7 @@
             <div class="flex justify-between items-center pb-2 border-b border-blue-200 mb-2.5">
                 <h3 id="passSetModalTitle" class="text-xs font-black text-slate-900">Setel Kata Sandi</h3>
                 <button type="button" onclick="closeModalOnly('passwordSetModal')" class="text-slate-600 p-0.5">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
@@ -771,6 +785,27 @@
                 'Tawang 1', 'Tawang 2', 'Watusambang'
             ]
         };
+
+        /* HELPER TOGGLE LOADING CLOUD SPINNER */
+        function toggleCloudLoading(show, message = "Mengambil Data...") {
+            const spinner = document.getElementById('cloudLoadingSpinner');
+            const textEl = document.getElementById('cloudLoadingText');
+            if (!spinner) return;
+
+            if (textEl) textEl.textContent = message;
+
+            if (show) {
+                spinner.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    spinner.classList.remove('opacity-0');
+                    spinner.classList.add('opacity-100');
+                });
+            } else {
+                spinner.classList.remove('opacity-100');
+                spinner.classList.add('opacity-0');
+                setTimeout(() => spinner.classList.add('hidden'), 300);
+            }
+        }
 
         window.addEventListener('load', function() {
             initDropdowns();
@@ -995,7 +1030,9 @@
                 return;
             }
 
+            toggleCloudLoading(true, "Memeriksa Sandi...");
             const existingPass = await fetchUnitPasswordFromSetoranKu(type, unitVal);
+            toggleCloudLoading(false);
 
             if (!existingPass) {
                 unlockedTargets[sessionKey] = true;
@@ -1065,7 +1102,10 @@
 
             openModalAnimation('passwordSetModal');
 
+            toggleCloudLoading(true, "Memuat Sandi...");
             const currentPass = await fetchUnitPasswordFromSetoranKu(type, unitVal);
+            toggleCloudLoading(false);
+
             setInput.value = currentPass || '';
             setInput.type = 'password';
 
@@ -1080,7 +1120,8 @@
 
             const btnSave = document.getElementById('btnSavePasswordCloud');
             btnSave.disabled = true;
-            btnSave.textContent = 'Menyimpan...';
+
+            toggleCloudLoading(true, "Menyimpan Sandi...");
 
             let searchKey = "";
             let targetDesa = "SYSTEM", targetKelompok = "SYSTEM";
@@ -1123,8 +1164,8 @@
                 error = res.error;
             }
 
+            toggleCloudLoading(false);
             btnSave.disabled = false;
-            btnSave.textContent = 'Simpan Sandi';
 
             if (error) {
                 showToast('Gagal memperbarui sandi!', 'error');
@@ -1148,6 +1189,8 @@
             dateObj.setMonth(dateObj.getMonth() - 1);
             let prevMonth = dateObj.toISOString().slice(0, 7);
 
+            toggleCloudLoading(true, "Mengecek Data Bulan Lalu...");
+
             const { data: prevRecords, error: err1 } = await supabaseClient
                 .from('setoran_ku')
                 .select('*')
@@ -1157,10 +1200,6 @@
                 .not('nama_jamaah', 'like', 'KELOMPOK:%')
                 .not('nama_jamaah', 'like', 'DESA:%')
                 .not('nama_jamaah', 'like', 'DAERAH:%');
-
-            if (err1 || !prevRecords || prevRecords.length === 0) {
-                return showToast(`Tidak ada data pada bulan ${formatYearMonthToIndo(prevMonth)}`, 'error');
-            }
 
             const { data: currRecords } = await supabaseClient
                 .from('setoran_ku')
@@ -1172,7 +1211,14 @@
                 .not('nama_jamaah', 'like', 'DESA:%')
                 .not('nama_jamaah', 'like', 'DAERAH:%');
 
+            toggleCloudLoading(false);
+
+            if (err1 || !prevRecords || prevRecords.length === 0) {
+                return showToast(`Tidak ada data pada bulan ${formatYearMonthToIndo(prevMonth)}`, 'error');
+            }
+
             let executeCopy = async () => {
+                toggleCloudLoading(true, "Menyalin Data...");
                 const newPayloads = prevRecords.map(rec => {
                     const { id, created_at, ...rest } = rec;
                     return { ...rest, bulan: targetMonth };
@@ -1181,6 +1227,8 @@
                 const { error: errInsert } = await supabaseClient
                     .from('setoran_ku')
                     .insert(newPayloads);
+
+                toggleCloudLoading(false);
 
                 if (errInsert) {
                     showToast('Gagal menyalin data dari cloud!', 'error');
@@ -1217,6 +1265,8 @@
 
                 if (!dVal || !kVal) return showToast('Pilih Desa & Kelompok!', 'error');
 
+                toggleCloudLoading(true, "Menyiapkan Excel Kelompok...");
+
                 const { data: filtered } = await supabaseClient
                     .from('setoran_ku')
                     .select('*')
@@ -1226,6 +1276,8 @@
                     .not('nama_jamaah', 'like', 'KELOMPOK:%')
                     .not('nama_jamaah', 'like', 'DESA:%')
                     .not('nama_jamaah', 'like', 'DAERAH:%');
+
+                toggleCloudLoading(false);
 
                 if (!filtered || filtered.length === 0) return showToast('Data jamaah kelompok ini masih kosong.', 'error');
 
@@ -1242,6 +1294,8 @@
 
                 if (!dVal) return showToast('Pilih Desa!', 'error');
 
+                toggleCloudLoading(true, "Menyiapkan Excel Desa...");
+
                 const { data: filtered } = await supabaseClient
                     .from('setoran_ku')
                     .select('*')
@@ -1250,6 +1304,8 @@
                     .not('nama_jamaah', 'like', 'KELOMPOK:%')
                     .not('nama_jamaah', 'like', 'DESA:%')
                     .not('nama_jamaah', 'like', 'DAERAH:%');
+
+                toggleCloudLoading(false);
 
                 if (!filtered || filtered.length === 0) return showToast('Data desa ini masih kosong.', 'error');
 
@@ -1262,6 +1318,9 @@
                 showToast(`Excel Desa ${dVal} berhasil diunduh`);
             } else if (activeLayerMenu === 'daerah') {
                 const selMonth = activeSelectedPeriod.daerah;
+
+                toggleCloudLoading(true, "Menyiapkan Excel Daerah...");
+
                 const { data: filtered } = await supabaseClient
                     .from('setoran_ku')
                     .select('*')
@@ -1269,6 +1328,8 @@
                     .not('nama_jamaah', 'like', 'KELOMPOK:%')
                     .not('nama_jamaah', 'like', 'DESA:%')
                     .not('nama_jamaah', 'like', 'DAERAH:%');
+
+                toggleCloudLoading(false);
 
                 if (!filtered || filtered.length === 0) return showToast('Data daerah masih kosong.', 'error');
 
@@ -1446,6 +1507,8 @@
 
             tbody.innerHTML = `<tr><td colspan="16" class="p-6 text-center text-blue-900 italic font-medium">Memuat data dari cloud Supabase...</td></tr>`;
 
+            toggleCloudLoading(true, "Memuat Data Jamaah...");
+
             let req = supabaseClient
                 .from('setoran_ku')
                 .select('*')
@@ -1462,6 +1525,8 @@
             }
 
             const { data, error } = await req;
+
+            toggleCloudLoading(false);
 
             if (error) {
                 tbody.innerHTML = `<tr><td colspan="16" class="p-6 text-center text-rose-700 italic">Gagal memuat data dari database.</td></tr>`;
@@ -1546,6 +1611,8 @@
 
             tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-blue-900 italic font-medium">Kalkulasi rekap desa dari cloud...</td></tr>`;
 
+            toggleCloudLoading(true, `Kalkulasi Rekap Desa ${dName}...`);
+
             const { data: items } = await supabaseClient
                 .from('setoran_ku')
                 .select('*')
@@ -1554,6 +1621,8 @@
                 .not('nama_jamaah', 'like', 'KELOMPOK:%')
                 .not('nama_jamaah', 'like', 'DESA:%')
                 .not('nama_jamaah', 'like', 'DAERAH:%');
+
+            toggleCloudLoading(false);
 
             tbody.innerHTML = '';
             kelompokInDesa.forEach(kName => {
@@ -1585,6 +1654,8 @@
             const tbody = document.getElementById('tableDaerahBody');
             tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-blue-900 italic font-medium">Mengkonsolidasi data daerah...</td></tr>`;
 
+            toggleCloudLoading(true, "Konsolidasi Data Daerah...");
+
             const { data: items } = await supabaseClient
                 .from('setoran_ku')
                 .select('*')
@@ -1592,6 +1663,8 @@
                 .not('nama_jamaah', 'like', 'KELOMPOK:%')
                 .not('nama_jamaah', 'like', 'DESA:%')
                 .not('nama_jamaah', 'like', 'DAERAH:%');
+
+            toggleCloudLoading(false);
 
             tbody.innerHTML = '';
             Object.keys(structureData).forEach(dName => {
@@ -1633,7 +1706,10 @@
                 'Hapus Catatan Jamaah?',
                 `Apakah Anda yakin ingin menghapus catatan keuangan ${namaJamaah}?`,
                 async () => {
+                    toggleCloudLoading(true, "Menghapus Data...");
                     const { error } = await supabaseClient.from('setoran_ku').delete().eq('id', id);
+                    toggleCloudLoading(false);
+
                     if (error) {
                         showToast('Gagal menghapus data!', 'error');
                     } else {
@@ -1645,7 +1721,10 @@
         }
 
         async function editRecord(id) {
+            toggleCloudLoading(true, "Memuat Data...");
             const { data: item, error } = await supabaseClient.from('setoran_ku').select('*').eq('id', id).single();
+            toggleCloudLoading(false);
+
             if (error || !item) return showToast('Gagal mengambil data jamaah!', 'error');
 
             document.getElementById('modalEditRecordId').value = item.id;
@@ -1727,7 +1806,8 @@
 
             const btnSubmit = document.getElementById('btnSubmitFormJamaah');
             btnSubmit.disabled = true;
-            btnSubmit.textContent = "Menyimpan...";
+
+            toggleCloudLoading(true, "Menyimpan Ke Cloud...");
 
             const payload = {
                 desa, kelompok, nama_jamaah: nama, bulan: selMonth,
@@ -1755,8 +1835,8 @@
                 err = res.error;
             }
 
+            toggleCloudLoading(false);
             btnSubmit.disabled = false;
-            btnSubmit.textContent = "Simpan Data";
 
             if (err) {
                 showToast('Gagal menyimpan data ke cloud!', 'error');
