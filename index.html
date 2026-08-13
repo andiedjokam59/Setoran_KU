@@ -29,6 +29,16 @@
             box-sizing: border-box;
         }
 
+        /* MENCEGAH BROWSER MENAMPILKAN IKON MATA BAWAAN (NATIVE REVEAL) */
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear,
+        input[type="password"]::-webkit-contacts-auto-fill-button,
+        input[type="password"]::-webkit-credentials-auto-fill-button {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
         /* LIGHT THEME BLUE GRADIENT BACKGROUND */
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -81,7 +91,7 @@
             outline: none;
         }
 
-        /* SOLID BLUE / DARK PILL BUTTONS (WARNA UTAMA KOTAK UNDUH EXCEL) */
+        /* SOLID BLUE / DARK PILL BUTTONS */
         .obsidian-pill {
             background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
             color: #ffffff;
@@ -177,7 +187,7 @@
         .sticky-col { position: sticky; left: 0; z-index: 10; background-color: #dbeafe; color: #1e3a8a; }
         .sticky-col-header { position: sticky; left: 0; z-index: 20; background-color: #1e3a8a; color: #ffffff; }
 
-        /* MODALS GLOSSY LIGHT KEMBALI SEPERTI SEMULA */
+        /* MODALS GLOSSY LIGHT */
         .modal-backdrop {
             transition: opacity 0.25s ease;
             background: rgba(15, 23, 42, 0.45); 
@@ -201,7 +211,6 @@
         
         .picker-option-item { transition: all 0.2s ease; touch-action: manipulation; }
         .picker-option-item:active { transform: scale(0.97); }
-        /* WARNA BIRU PADA PILIHAN/ITEM DI DALAM POPUP DISAMAKAN DENGAN KOTAK UNDUH EXCEL (OBSIDIAN-PILL) */
         .picker-option-item.active-selected {
             background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
             color: #ffffff; font-weight: 800;
@@ -244,7 +253,6 @@
         <!-- LAYER 1: DASHBOARD UTAMA -->
         <div id="layerDashboardUtama" class="layer-transition layer-visible space-y-6 py-2">
             
-            <!-- HEADER LOGO KACA -->
             <div class="flex flex-col items-center text-center">
                 <div class="w-24 h-24 sm:w-28 sm:h-28 ice-pill rounded-[2.2rem] p-4 flex items-center justify-center mb-4 relative shadow-xl transition-all duration-300 hover:scale-105">
                     <img src="logo insan qurany.png" alt="Logo Utama" class="w-full h-full object-contain relative z-10 drop-shadow-sm" />
@@ -255,10 +263,7 @@
                 <div class="w-12 h-1 bg-blue-500 rounded-full mt-2.5 opacity-80 shadow-xs"></div>
             </div>
 
-            <!-- 3 KARTU MENU UTAMA -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                
-                <!-- KELOMPOK -->
                 <button type="button" onclick="openLayerMenu('kelompok')" class="reference-menu-card p-5 rounded-[2.2rem] flex flex-col items-center text-center cursor-pointer group">
                     <div class="w-12 h-12 obsidian-pill rounded-2xl flex items-center justify-center mb-3 text-blue-300">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -269,7 +274,6 @@
                     <span class="text-[10px] font-extrabold ice-pill px-3 py-1 rounded-full mt-2.5">Daftar Jamaah</span>
                 </button>
 
-                <!-- DESA -->
                 <button type="button" onclick="openLayerMenu('desa')" class="reference-menu-card p-5 rounded-[2.2rem] flex flex-col items-center text-center cursor-pointer group">
                     <div class="w-12 h-12 obsidian-pill rounded-2xl flex items-center justify-center mb-3 text-emerald-300">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -280,7 +284,6 @@
                     <span class="text-[10px] font-extrabold ice-pill px-3 py-1 rounded-full mt-2.5">Rekap Desa</span>
                 </button>
 
-                <!-- DAERAH -->
                 <button type="button" onclick="openLayerMenu('daerah')" class="reference-menu-card p-5 rounded-[2.2rem] flex flex-col items-center text-center cursor-pointer group">
                     <div class="w-12 h-12 obsidian-pill rounded-2xl flex items-center justify-center mb-3 text-cyan-300">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -293,15 +296,13 @@
             </div>
         </div>
 
-        <!-- BAR ATAS SUB-MENU (KOTAK TOMBOL EXCEL DIPERPANJANG DI SEBELAH KANAN) -->
+        <!-- BAR ATAS SUB-MENU -->
         <div id="btnBackToDashboard" class="layer-transition layer-hidden mb-5 header-action-bar">
-            <!-- Kiri: Kembali -->
             <button type="button" onclick="backToDashboard()" class="inline-flex items-center gap-2 text-xs font-bold ice-pill px-4 py-2.5 rounded-2xl cursor-pointer transition-all active:scale-95 shrink-0">
                 <svg class="w-4 h-4 text-blue-900" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
                 <span>Kembali</span>
             </button>
 
-            <!-- Kanan: Export Excel -->
             <button type="button" onclick="exportToExcelActiveOnly()" class="obsidian-pill text-white text-[11px] font-black px-6 py-2.5 rounded-2xl shadow-lg flex items-center gap-2 cursor-pointer transition-all active:scale-95 ml-auto shrink-0">
                 <svg class="w-4 h-4 text-blue-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                 <span id="btnExportExcelLabel" class="whitespace-nowrap">Unduh Excel Kelompok</span>
@@ -347,7 +348,7 @@
                             <span class="text-xs font-extrabold text-blue-950 truncate">Kelompok: <span id="labelActiveKelompokTitle" class="text-blue-700 font-black"></span></span>
                             
                             <button type="button" onclick="openSetPasswordModalForCurrentTarget('kelompok')" class="text-[10px] font-black obsidian-pill px-3 py-1 rounded-full flex items-center gap-1 cursor-pointer transition-all active:scale-95 shrink-0">
-                                <span>🔑 Sandi</span>
+                                <span>🔑 Sandi Kelompok</span>
                             </button>
                         </div>
 
@@ -427,7 +428,7 @@
                         <h3 class="text-xs font-extrabold truncate">Rekap Desa: <span id="labelActiveDesaName" class="text-blue-200 font-black"></span></h3>
                         
                         <button type="button" onclick="openSetPasswordModalForCurrentTarget('desa')" class="text-[10px] font-black obsidian-pill px-3 py-1 rounded-full flex items-center gap-1 cursor-pointer transition-all active:scale-95 shrink-0">
-                            <span>🔑 Ubah Sandi</span>
+                            <span>🔑 Sandi Desa</span>
                         </button>
                     </div>
 
@@ -465,7 +466,7 @@
                         </div>
 
                         <button type="button" onclick="openSetPasswordModalForCurrentTarget('daerah')" class="text-[10px] font-black obsidian-pill px-3 py-1 rounded-full flex items-center gap-1 cursor-pointer transition-all active:scale-95 shrink-0">
-                            <span>🔑 Ubah Sandi</span>
+                            <span>🔑 Sandi Daerah</span>
                         </button>
                     </div>
 
@@ -551,13 +552,13 @@
             <form onsubmit="verifyTargetPassword(event)" class="space-y-2.5 text-xs">
                 <div class="relative flex items-center">
                     <input type="password" id="inputAuthPassword" required placeholder="Kata Sandi..." class="glass-input w-full rounded-2xl py-2.5 pl-3 pr-9 text-center text-xs font-bold text-slate-900" />
-                    <button type="button" onclick="togglePasswordVisibility('inputAuthPassword', 'iconEyeAuth')" class="absolute right-2 text-slate-500 hover:text-black p-1">
+                    <button type="button" onclick="togglePasswordVisibility('inputAuthPassword', 'iconEyeAuth')" class="absolute right-2 text-slate-500 hover:text-black p-1 flex items-center justify-center">
                         <svg id="iconEyeAuth" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </button>
                 </div>
 
                 <div class="flex gap-1.5">
-                    <button type="button" onclick="closeModalOnly('passwordAuthModal')" class="flex-1 py-2 rounded-xl font-bold text-slate-700 bg-slate-200 hover:bg-slate-300 text-[11px] active:scale-95 transition-all">Batal</button>
+                    <button type="button" onclick="cancelPasswordAuth()" class="flex-1 py-2 rounded-xl font-bold text-slate-700 bg-slate-200 hover:bg-slate-300 text-[11px] active:scale-95 transition-all">Batal</button>
                     <button type="submit" class="flex-1 py-2 rounded-xl font-black obsidian-pill text-[11px] shadow-xs active:scale-95 transition-all">Buka Data</button>
                 </div>
             </form>
@@ -575,12 +576,12 @@
             </div>
 
             <form onsubmit="handleSaveCurrentTargetPassword(event)" class="space-y-3 text-[11px]">
-                <p class="text-[10px] text-slate-600 leading-tight">Kata sandi baru akan berlaku khusus untuk unit ini. Kosongkan jika ingin menghapus sandi.</p>
+                <p class="text-[10px] text-slate-600 leading-tight">Kata sandi baru ini **khusus** untuk unit ini saja dan tidak mempengaruhi unit lain. Kosongkan jika ingin menghapus sandi.</p>
                 <div>
                     <label class="block text-[9px] font-bold text-blue-900 mb-1">Kata Sandi Baru</label>
                     <div class="relative flex items-center">
                         <input type="password" id="setPassInputValue" placeholder="Masukkan sandi..." class="glass-input w-full rounded-2xl py-2 pl-3 pr-8 text-xs font-bold text-slate-900" />
-                        <button type="button" onclick="togglePasswordVisibility('setPassInputValue', 'iconEyeSet')" class="absolute right-2 text-slate-500 hover:text-black p-1">
+                        <button type="button" onclick="togglePasswordVisibility('setPassInputValue', 'iconEyeSet')" class="absolute right-2 text-slate-500 hover:text-black p-1 flex items-center justify-center">
                             <svg id="iconEyeSet" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </button>
                     </div>
@@ -588,7 +589,7 @@
 
                 <div class="pt-2 flex justify-end gap-1.5 border-t border-blue-200">
                     <button type="button" onclick="closeModalOnly('passwordSetModal')" class="px-3 py-1.5 rounded-xl font-bold text-slate-700 bg-slate-200 text-[10px] active:scale-95 transition-all">Batal</button>
-                    <button type="submit" class="px-4 py-1.5 rounded-xl font-black obsidian-pill text-[10px] active:scale-95 transition-all">Simpan Sandi</button>
+                    <button type="submit" id="btnSavePasswordCloud" class="px-4 py-1.5 rounded-xl font-black obsidian-pill text-[10px] active:scale-95 transition-all">Simpan Sandi</button>
                 </div>
             </form>
         </div>
@@ -726,7 +727,12 @@
 
         let activeLayerMenu = null;
         let pendingAuthSuccessCallback = null;
+        let pendingAuthCancelCallback = null;
         let currentPassTargetKey = null;
+        let targetPasswordValue = null;
+
+        // Memory unlocked session
+        let unlockedTargets = {};
 
         let activeModalStack = [];
 
@@ -744,8 +750,6 @@
             'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
         ];
-
-        let storedPasswords = JSON.parse(localStorage.getItem('app_unit_passwords') || '{}');
 
         const structureData = {
             'Bandardawung': [
@@ -785,6 +789,7 @@
             }
         });
 
+        /* TOGGLE VISIBILITY KATA SANDI (MATA TUNGGAL) */
         function togglePasswordVisibility(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -944,16 +949,69 @@
             openModalAnimation('confirmDialogModal');
         }
 
-        function checkPasswordAndExecute(targetKey, targetName, callback) {
-            let pass = storedPasswords[targetKey];
-            if (!pass) {
+        /* VERIFIKASI KATA SANDI MANDIRI PER UNIT */
+        async function fetchUnitPasswordFromSetoranKu(type, unitVal) {
+            let searchKey = "";
+            if (type === 'kelompok') searchKey = `KELOMPOK:${unitVal}`;
+            else if (type === 'desa') searchKey = `DESA:${unitVal}`;
+            else if (type === 'daerah') searchKey = `DAERAH:ALL`;
+
+            // Cari kunci sandi spesifik di kolom sandi_unit
+            const { data } = await supabaseClient
+                .from('setoran_ku')
+                .select('sandi_unit')
+                .eq('nama_jamaah', searchKey)
+                .not('sandi_unit', 'is', null)
+                .neq('sandi_unit', '')
+                .limit(1);
+
+            if (data && data.length > 0 && data[0].sandi_unit) {
+                return data[0].sandi_unit;
+            }
+
+            // Backward Compatibility: Jika sandi lama kelompok tersimpan langsung di baris data kelompok
+            if (type === 'kelompok') {
+                const { data: legacyData } = await supabaseClient
+                    .from('setoran_ku')
+                    .select('sandi_unit')
+                    .eq('kelompok', unitVal)
+                    .not('sandi_unit', 'is', null)
+                    .neq('sandi_unit', '')
+                    .limit(1);
+                
+                if (legacyData && legacyData.length > 0 && legacyData[0].sandi_unit) {
+                    return legacyData[0].sandi_unit;
+                }
+            }
+
+            return null;
+        }
+
+        async function checkPasswordAndExecute(type, unitVal, targetName, callback, cancelCallback = null) {
+            const sessionKey = `${type}_${unitVal}`;
+
+            if (unlockedTargets[sessionKey]) {
+                callback();
+                return;
+            }
+
+            const existingPass = await fetchUnitPasswordFromSetoranKu(type, unitVal);
+
+            if (!existingPass) {
+                unlockedTargets[sessionKey] = true;
                 callback();
             } else {
-                currentPassTargetKey = targetKey;
+                currentPassTargetKey = sessionKey;
+                targetPasswordValue = existingPass;
                 pendingAuthSuccessCallback = callback;
+                pendingAuthCancelCallback = cancelCallback;
+
                 const passInput = document.getElementById('inputAuthPassword');
                 passInput.value = '';
                 passInput.type = 'password';
+                
+                document.getElementById('iconEyeAuth').innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>`;
+
                 document.getElementById('passAuthModalSubtitle').textContent = `Masukkan kata sandi khusus ${targetName}`;
                 openModalAnimation('passwordAuthModal');
             }
@@ -962,57 +1020,121 @@
         function verifyTargetPassword(e) {
             e.preventDefault();
             let input = document.getElementById('inputAuthPassword').value;
-            let pass = storedPasswords[currentPassTargetKey];
 
-            if (input === pass) {
+            if (input === targetPasswordValue) {
+                unlockedTargets[currentPassTargetKey] = true;
                 closeModalOnly('passwordAuthModal');
                 if (pendingAuthSuccessCallback) pendingAuthSuccessCallback();
                 pendingAuthSuccessCallback = null;
+                pendingAuthCancelCallback = null;
                 showToast('Akses berhasil dibuka');
             } else {
                 showToast('Kata sandi salah! Akses ditolak.', 'error');
             }
         }
 
-        function openSetPasswordModalForCurrentTarget(type) {
-            let key = "", label = "";
+        function cancelPasswordAuth() {
+            closeModalOnly('passwordAuthModal');
+            if (pendingAuthCancelCallback) pendingAuthCancelCallback();
+            pendingAuthSuccessCallback = null;
+            pendingAuthCancelCallback = null;
+        }
+
+        async function openSetPasswordModalForCurrentTarget(type) {
+            let label = "", unitVal = "";
 
             if (type === 'kelompok') {
-                const kVal = document.getElementById('selectMenuKelompokName').value;
-                if (!kVal) return showToast('Pilih kelompok terlebih dahulu!', 'error');
-                key = `KLP_${kVal}`;
-                label = `Kelompok ${kVal}`;
+                unitVal = document.getElementById('selectMenuKelompokName').value;
+                if (!unitVal) return showToast('Pilih kelompok terlebih dahulu!', 'error');
+                label = `Kelompok ${unitVal}`;
             } else if (type === 'desa') {
-                const dVal = document.getElementById('selectMenuDesaInput').value;
-                if (!dVal) return showToast('Pilih desa terlebih dahulu!', 'error');
-                key = `DESA_${dVal}`;
-                label = `Desa ${dVal}`;
+                unitVal = document.getElementById('selectMenuDesaInput').value;
+                if (!unitVal) return showToast('Pilih desa terlebih dahulu!', 'error');
+                label = `Desa ${unitVal}`;
             } else if (type === 'daerah') {
-                key = `DAERAH_ALL`;
+                unitVal = `DAERAH_ALL`;
                 label = `Daerah Tawangmangu`;
             }
 
-            currentPassTargetKey = key;
+            currentPassTargetKey = `${type}_${unitVal}`;
             document.getElementById('passSetModalTitle').textContent = `Setel Sandi: ${label}`;
+
             const setInput = document.getElementById('setPassInputValue');
-            setInput.value = storedPasswords[key] || '';
-            setInput.type = 'password';
+            setInput.value = 'Memuat...';
+            setInput.type = 'text';
+
             openModalAnimation('passwordSetModal');
+
+            const currentPass = await fetchUnitPasswordFromSetoranKu(type, unitVal);
+            setInput.value = currentPass || '';
+            setInput.type = 'password';
+
+            document.getElementById('iconEyeSet').innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>`;
         }
 
-        function handleSaveCurrentTargetPassword(e) {
+        /* MENYIMPAN SANDI KELOMPOK, DESA, ATAU DAERAH SECARA TERPISAH MANDIRI */
+        async function handleSaveCurrentTargetPassword(e) {
             e.preventDefault();
             let newPass = document.getElementById('setPassInputValue').value.trim();
+            const [type, unitVal] = currentPassTargetKey.split('_');
 
-            if (newPass) {
-                storedPasswords[currentPassTargetKey] = newPass;
-            } else {
-                delete storedPasswords[currentPassTargetKey];
+            const btnSave = document.getElementById('btnSavePasswordCloud');
+            btnSave.disabled = true;
+            btnSave.textContent = 'Menyimpan...';
+
+            let searchKey = "";
+            let targetDesa = "SYSTEM", targetKelompok = "SYSTEM";
+
+            if (type === 'kelompok') {
+                searchKey = `KELOMPOK:${unitVal}`;
+                targetKelompok = unitVal;
+                targetDesa = document.getElementById('selectMenuKelompokDesa').value || "SYSTEM";
+            } else if (type === 'desa') {
+                searchKey = `DESA:${unitVal}`;
+                targetDesa = unitVal;
+            } else if (type === 'daerah') {
+                searchKey = `DAERAH:ALL`;
             }
 
-            localStorage.setItem('app_unit_passwords', JSON.stringify(storedPasswords));
-            closeModalOnly('passwordSetModal');
-            showToast('Kata sandi berhasil diperbarui!');
+            const { data: existingRecord } = await supabaseClient
+                .from('setoran_ku')
+                .select('id')
+                .eq('nama_jamaah', searchKey)
+                .limit(1);
+
+            let error = null;
+
+            if (existingRecord && existingRecord.length > 0) {
+                const res = await supabaseClient
+                    .from('setoran_ku')
+                    .update({ sandi_unit: newPass || null })
+                    .eq('id', existingRecord[0].id);
+                error = res.error;
+            } else {
+                const res = await supabaseClient
+                    .from('setoran_ku')
+                    .insert([{
+                        desa: targetDesa,
+                        kelompok: targetKelompok,
+                        nama_jamaah: searchKey,
+                        bulan: '2026-08',
+                        sandi_unit: newPass || null
+                    }]);
+                error = res.error;
+            }
+
+            btnSave.disabled = false;
+            btnSave.textContent = 'Simpan Sandi';
+
+            if (error) {
+                showToast('Gagal memperbarui sandi!', 'error');
+            } else {
+                if(newPass) unlockedTargets[currentPassTargetKey] = true;
+                else delete unlockedTargets[currentPassTargetKey];
+
+                closeModalOnly('passwordSetModal');
+                showToast('Kata sandi unit berhasil disimpan!');
+            }
         }
 
         async function copyCurrentKelompokPreviousMonthData() {
@@ -1031,7 +1153,10 @@
                 .select('*')
                 .eq('bulan', prevMonth)
                 .eq('desa', dVal)
-                .eq('kelompok', kVal);
+                .eq('kelompok', kVal)
+                .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                .not('nama_jamaah', 'like', 'DESA:%')
+                .not('nama_jamaah', 'like', 'DAERAH:%');
 
             if (err1 || !prevRecords || prevRecords.length === 0) {
                 return showToast(`Tidak ada data pada bulan ${formatYearMonthToIndo(prevMonth)}`, 'error');
@@ -1042,7 +1167,10 @@
                 .select('id')
                 .eq('bulan', targetMonth)
                 .eq('desa', dVal)
-                .eq('kelompok', kVal);
+                .eq('kelompok', kVal)
+                .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                .not('nama_jamaah', 'like', 'DESA:%')
+                .not('nama_jamaah', 'like', 'DAERAH:%');
 
             let executeCopy = async () => {
                 const newPayloads = prevRecords.map(rec => {
@@ -1073,7 +1201,15 @@
             }
         }
 
+        /* EXPORT EXCEL TANPA MENYERTAKAN KOLOM SANDI_UNIT */
         async function exportToExcelActiveOnly() {
+            const cleanDataForExport = (dataList) => {
+                return dataList.map(item => {
+                    const { sandi_unit, ...cleanItem } = item;
+                    return cleanItem;
+                });
+            };
+
             if (activeLayerMenu === 'kelompok') {
                 const selMonth = activeSelectedPeriod.kelompok;
                 const dVal = document.getElementById('selectMenuKelompokDesa').value;
@@ -1081,10 +1217,21 @@
 
                 if (!dVal || !kVal) return showToast('Pilih Desa & Kelompok!', 'error');
 
-                const { data: filtered } = await supabaseClient.from('setoran_ku').select('*').eq('bulan', selMonth).eq('desa', dVal).eq('kelompok', kVal);
+                const { data: filtered } = await supabaseClient
+                    .from('setoran_ku')
+                    .select('*')
+                    .eq('bulan', selMonth)
+                    .eq('desa', dVal)
+                    .eq('kelompok', kVal)
+                    .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                    .not('nama_jamaah', 'like', 'DESA:%')
+                    .not('nama_jamaah', 'like', 'DAERAH:%');
+
                 if (!filtered || filtered.length === 0) return showToast('Data jamaah kelompok ini masih kosong.', 'error');
 
-                const worksheet = XLSX.utils.json_to_sheet(filtered);
+                const cleanedData = cleanDataForExport(filtered);
+
+                const worksheet = XLSX.utils.json_to_sheet(cleanedData);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, `Kelompok ${kVal}`);
                 XLSX.writeFile(workbook, `Laporan_${kVal}_${selMonth}.xlsx`);
@@ -1095,20 +1242,39 @@
 
                 if (!dVal) return showToast('Pilih Desa!', 'error');
 
-                const { data: filtered } = await supabaseClient.from('setoran_ku').select('*').eq('bulan', selMonth).eq('desa', dVal);
+                const { data: filtered } = await supabaseClient
+                    .from('setoran_ku')
+                    .select('*')
+                    .eq('bulan', selMonth)
+                    .eq('desa', dVal)
+                    .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                    .not('nama_jamaah', 'like', 'DESA:%')
+                    .not('nama_jamaah', 'like', 'DAERAH:%');
+
                 if (!filtered || filtered.length === 0) return showToast('Data desa ini masih kosong.', 'error');
 
-                const worksheet = XLSX.utils.json_to_sheet(filtered);
+                const cleanedData = cleanDataForExport(filtered);
+
+                const worksheet = XLSX.utils.json_to_sheet(cleanedData);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, `Desa ${dVal}`);
                 XLSX.writeFile(workbook, `Laporan_Desa_${dVal}_${selMonth}.xlsx`);
                 showToast(`Excel Desa ${dVal} berhasil diunduh`);
             } else if (activeLayerMenu === 'daerah') {
                 const selMonth = activeSelectedPeriod.daerah;
-                const { data: filtered } = await supabaseClient.from('setoran_ku').select('*').eq('bulan', selMonth);
+                const { data: filtered } = await supabaseClient
+                    .from('setoran_ku')
+                    .select('*')
+                    .eq('bulan', selMonth)
+                    .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                    .not('nama_jamaah', 'like', 'DESA:%')
+                    .not('nama_jamaah', 'like', 'DAERAH:%');
+
                 if (!filtered || filtered.length === 0) return showToast('Data daerah masih kosong.', 'error');
 
-                const worksheet = XLSX.utils.json_to_sheet(filtered);
+                const cleanedData = cleanDataForExport(filtered);
+
+                const worksheet = XLSX.utils.json_to_sheet(cleanedData);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Konsolidasi Daerah");
                 XLSX.writeFile(workbook, `Laporan_Daerah_${selMonth}.xlsx`);
@@ -1149,7 +1315,7 @@
 
         function openLayerMenu(menuType) {
             if (menuType === 'daerah') {
-                checkPasswordAndExecute('DAERAH_ALL', 'Daerah Tawangmangu', () => {
+                checkPasswordAndExecute('daerah', 'DAERAH_ALL', 'Daerah Tawangmangu', () => {
                     executeOpenLayerMenu(menuType);
                 });
             } else {
@@ -1199,6 +1365,17 @@
 
         function backToDashboardVisualOnly() {
             activeLayerMenu = null;
+            unlockedTargets = {};
+
+            document.getElementById('selectMenuKelompokDesa').value = "";
+            document.getElementById('selectMenuKelompokName').innerHTML = '<option value="">-- Pilih Kelompok --</option>';
+            document.getElementById('selectMenuDesaInput').value = "";
+
+            document.getElementById('kelompokEmptyPrompt').classList.remove('hidden');
+            document.getElementById('kelompokTableSection').classList.add('hidden');
+            document.getElementById('desaEmptyPrompt').classList.remove('hidden');
+            document.getElementById('desaTableSection').classList.add('hidden');
+
             const layerDashboard = document.getElementById('layerDashboardUtama');
             const layerDetail = document.getElementById('layerDetailContent');
             const btnBack = document.getElementById('btnBackToDashboard');
@@ -1223,7 +1400,9 @@
                 structureData[dVal].sort().forEach(k => klpSel.add(new Option(k, k)));
             }
 
-            onMenuKelompokSelectChange();
+            delete unlockedTargets['kelompok_' + document.getElementById('selectMenuKelompokName').value];
+            document.getElementById('kelompokEmptyPrompt').classList.remove('hidden');
+            document.getElementById('kelompokTableSection').classList.add('hidden');
         }
 
         function onMenuKelompokSelectChange() {
@@ -1232,12 +1411,26 @@
             const tableSection = document.getElementById('kelompokTableSection');
 
             if (kVal) {
-                checkPasswordAndExecute(`KLP_${kVal}`, `Kelompok ${kVal}`, () => {
-                    prompt.classList.add('hidden');
-                    tableSection.classList.remove('hidden');
-                    document.getElementById('labelActiveKelompokTitle').textContent = kVal;
-                    renderKelompokJamaahTable();
+                Object.keys(unlockedTargets).forEach(key => {
+                    if(key.startsWith('kelompok_')) delete unlockedTargets[key];
                 });
+
+                checkPasswordAndExecute(
+                    'kelompok',
+                    kVal, 
+                    `Kelompok ${kVal}`, 
+                    () => {
+                        prompt.classList.add('hidden');
+                        tableSection.classList.remove('hidden');
+                        document.getElementById('labelActiveKelompokTitle').textContent = kVal;
+                        renderKelompokJamaahTable();
+                    },
+                    () => {
+                        document.getElementById('selectMenuKelompokName').value = "";
+                        prompt.classList.remove('hidden');
+                        tableSection.classList.add('hidden');
+                    }
+                );
             } else {
                 prompt.classList.remove('hidden');
                 tableSection.classList.add('hidden');
@@ -1253,7 +1446,16 @@
 
             tbody.innerHTML = `<tr><td colspan="16" class="p-6 text-center text-blue-900 italic font-medium">Memuat data dari cloud Supabase...</td></tr>`;
 
-            let req = supabaseClient.from('setoran_ku').select('*').eq('bulan', selMonth).eq('desa', dVal).eq('kelompok', kVal).order('id', { ascending: true });
+            let req = supabaseClient
+                .from('setoran_ku')
+                .select('*')
+                .eq('bulan', selMonth)
+                .eq('desa', dVal)
+                .eq('kelompok', kVal)
+                .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                .not('nama_jamaah', 'like', 'DESA:%')
+                .not('nama_jamaah', 'like', 'DAERAH:%')
+                .order('id', { ascending: true });
             
             if (query) {
                 req = req.ilike('nama_jamaah', `%${query}%`);
@@ -1311,12 +1513,26 @@
             const tableSection = document.getElementById('desaTableSection');
 
             if (dVal) {
-                checkPasswordAndExecute(`DESA_${dVal}`, `Desa ${dVal}`, () => {
-                    prompt.classList.add('hidden');
-                    tableSection.classList.remove('hidden');
-                    document.getElementById('labelActiveDesaName').textContent = dVal;
-                    renderDesaTable(dVal);
+                Object.keys(unlockedTargets).forEach(key => {
+                    if(key.startsWith('desa_')) delete unlockedTargets[key];
                 });
+
+                checkPasswordAndExecute(
+                    'desa',
+                    dVal, 
+                    `Desa ${dVal}`, 
+                    () => {
+                        prompt.classList.add('hidden');
+                        tableSection.classList.remove('hidden');
+                        document.getElementById('labelActiveDesaName').textContent = dVal;
+                        renderDesaTable(dVal);
+                    },
+                    () => {
+                        document.getElementById('selectMenuDesaInput').value = "";
+                        prompt.classList.remove('hidden');
+                        tableSection.classList.add('hidden');
+                    }
+                );
             } else {
                 prompt.classList.remove('hidden');
                 tableSection.classList.add('hidden');
@@ -1334,7 +1550,10 @@
                 .from('setoran_ku')
                 .select('*')
                 .eq('desa', dName)
-                .eq('bulan', selMonth);
+                .eq('bulan', selMonth)
+                .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                .not('nama_jamaah', 'like', 'DESA:%')
+                .not('nama_jamaah', 'like', 'DAERAH:%');
 
             tbody.innerHTML = '';
             kelompokInDesa.forEach(kName => {
@@ -1369,7 +1588,10 @@
             const { data: items } = await supabaseClient
                 .from('setoran_ku')
                 .select('*')
-                .eq('bulan', selMonth);
+                .eq('bulan', selMonth)
+                .not('nama_jamaah', 'like', 'KELOMPOK:%')
+                .not('nama_jamaah', 'like', 'DESA:%')
+                .not('nama_jamaah', 'like', 'DAERAH:%');
 
             tbody.innerHTML = '';
             Object.keys(structureData).forEach(dName => {
